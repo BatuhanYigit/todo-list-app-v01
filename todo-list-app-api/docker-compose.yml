@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  nodejs-app:
+    build: .
+    container_name: todolistapi
+    ports:
+      - "5000:5000"
+    environment:
+      PORT: 5000
+      DB_URL: "mongodb://root:example@mongodb:27017/"
+    depends_on:
+      - mongodb
+    
+    volumes:
+      - .:/usr/src/app
+
+  mongodb:
+    image: mongo:latest
+    hostname: mongodb
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_DATABASE: todo-list-database
