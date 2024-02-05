@@ -5,7 +5,7 @@ const Response = require("../utils/response");
 
 
 const getById = async (req, res, next) => {
-    const { taskID } = req.body
+    const { taskID } = req.body.id
     try {
         const getByTask = await task.getById(taskID);
 
