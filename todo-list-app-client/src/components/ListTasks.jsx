@@ -9,13 +9,36 @@ const ListTasks = ({ tasks, setTasks }) => {
     const [closed, setClosed] = useState([]);
 
     useEffect(() => {
-        const fTodos = tasks.filter((task) => task.status === "todo");
-        const fInProgress = tasks.filter((task) => task.status === "inprogress");
-        const fClosed = tasks.filter((task) => task.status === "closed");
 
-        setTodos(fTodos)
-        setInProgress(fInProgress)
-        setClosed(fClosed)
+        async function fetchTodoList() {
+            try {
+                const response = await fetch("http://localhost:5000/api/get-todo");
+                if (!response.ok) {
+                    throw new Error("Failed to todo list get!")
+                }
+                const data = await response.json();
+                setTodos(data.data);
+
+            } catch (error) {
+                console.error("Error fetching todo list: ", error.message);
+                toast.error("Failed todo list ", error.message)
+            }
+        }
+
+        fetchTodoList();
+
+        if (tasks) {
+
+            const fTodos = tasks.filter((task) => task.status === "todo");
+            const fInProgress = tasks.filter((task) => task.status === "inprogress");
+            const fClosed = tasks.filter((task) => task.status === "closed");
+
+
+            setInProgress(fInProgress)
+            setClosed(fClosed)
+
+        }
+
 
     }, [tasks]);
 
@@ -107,23 +130,38 @@ const Task = ({ task, tasks, setTasks }) => {
     console.log(isDragging)
 
 
-    const handleRemove = (id) => {
+    const handleRemove = async (id) => {
         console.log(id);
 
+        try {
+            const response = await fetch(`http://localhost:5000/api/delete/${id}`, {
+                method: 'DELETE'
+            });
+            console.log("RESPONSE BOOL", response.ok)
+            if (!response.ok) {
+                throw new Error("Failed to delete task");
+            }
+            if (tasks) {
+                const fTasks = tasks.filter((t) => t.id !== id);
+                setTasks(fTasks);
+            }
+
+            toast("Removed", { icon: ":)" })
+
+        } catch (error) {
+            console.error("Error removing task:", error.message);
+            toast.error("Failed to remove task");
+        }
 
 
-        const fTasks = tasks.filter((t) => t.id !== id);
 
 
 
-        setTasks(fTasks);
-
-        toast("Removed", { icon: ":)" })
     }
     return (
         <div ref={drag} className={`relative p-4 mt-8 shadow-md rounded-md ${isDragging ? "opacity-25" : "opacity-100"} cursor-grab`}>
             <p>{task.name}</p>
-            <button className="absolute bottom-1 right-1 text-slate-400" onClick={() => handleRemove(task.id)}>
+            <button className="absolute bottom-1 right-1 text-slate-400" onClick={() => handleRemove(task._id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M15 12H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>

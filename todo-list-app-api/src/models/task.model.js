@@ -5,6 +5,11 @@ const taskShema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+    },
+    status: {
+        type: String,
+        required: true,
+        trim: true,
     }
 },
     { collection: "tasks", timestamps: true })

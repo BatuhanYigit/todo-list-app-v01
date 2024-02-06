@@ -29,8 +29,41 @@ const getAllTasks = async (req, res, next) => {
     }
 }
 
+const getByTodo = async (req, res, next) => {
+    try {
+        const tasks = await task.find({ status: "todo" });
+        return new Response(tasks, "Todo all").success(res);
+
+    } catch (err) {
+        console.error(err)
+        next(err)
+    }
+}
+
+const getByInprogress = async (req, res, next) => {
+    try {
+        const tasks = await task.find({ status: "inprogress" });
+        return new Response(tasks, "inprogress all").success(res);
+
+    } catch (err) {
+        console.error(err)
+        next(err)
+    }
+}
+
+const getByClosed = async (req, res, next) => {
+    try {
+        const tasks = await task.find({ status: "closed" });
+        return new Response(tasks, "closed all").success(res);
+
+    } catch (err) {
+        console.error(err)
+        next(err)
+    }
+}
+
 const deleteTask = async (req, res, next) => {
-    const taskId = req.body.id;
+    const taskId = req.params.id;
     try {
         if (!taskId) {
             throw new APIError("Task id required")
@@ -48,6 +81,8 @@ const deleteTask = async (req, res, next) => {
     }
 
 }
+
+
 
 
 const createTask = async (req, res, next) => {
@@ -72,4 +107,4 @@ const createTask = async (req, res, next) => {
 
 
 
-module.exports = { createTask, getAllTasks, deleteTask, getById };
+module.exports = { createTask, getAllTasks, deleteTask, getById, getByTodo, getByClosed, getByInprogress };
