@@ -26,9 +26,6 @@ app.get("/", (req, res) => {
 
 
 
-
-//Catch error
-
 app.use(errorHandlerMiddleware)
 
 

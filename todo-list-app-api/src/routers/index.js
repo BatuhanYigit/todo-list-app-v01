@@ -1,5 +1,5 @@
 var express = require('express');
-const { createTask, getAllTasks, deleteTask, getByTodo, getByClosed, getByInprogress } = require("../controllers/taskCreate")
+const { createTask, getAllTasks, deleteTask, getByTodo, getByClosed, getByInprogress, updateStatus } = require("../controllers/taskCreate")
 const port = process.env.PORT || 5000;
 
 const router = express.Router();
@@ -16,5 +16,6 @@ router.delete('/delete/:id', deleteTask);
 router.get('/get-todo', getByTodo);
 router.get('/get-closed', getByClosed);
 router.get('/get-inprogress', getByInprogress);
+router.put('/update-status', updateStatus);
 
 module.exports = router;

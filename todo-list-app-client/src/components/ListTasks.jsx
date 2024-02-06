@@ -12,7 +12,7 @@ const ListTasks = ({ tasks, setTasks }) => {
 
         async function fetchTodoList() {
             try {
-                const response = await fetch("http://localhost:5000/api/get-todo");
+                const response = await fetch("http://localhost:5000/api/get-all");
                 if (!response.ok) {
                     throw new Error("Failed to todo list get!")
                 }
@@ -33,7 +33,7 @@ const ListTasks = ({ tasks, setTasks }) => {
             const fInProgress = tasks.filter((task) => task.status === "inprogress");
             const fClosed = tasks.filter((task) => task.status === "closed");
 
-
+            setInProgress(fTodos)
             setInProgress(fInProgress)
             setClosed(fClosed)
 

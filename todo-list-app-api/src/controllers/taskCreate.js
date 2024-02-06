@@ -101,10 +101,38 @@ const createTask = async (req, res, next) => {
         return new Response(savedTask, "Task Created").created(res);
     } catch (err) {
         console.error(err);
-        next(err); // Hata durumunu errorHandlerMiddleware'e iletiyoruz
+        next(err);
     }
 };
 
 
+const updateStatus = async (req, res, next) => {
 
-module.exports = { createTask, getAllTasks, deleteTask, getById, getByTodo, getByClosed, getByInprogress };
+    const { id, newStatus } = req.body;
+
+    try {
+        if (!id || !newStatus) {
+            throw new APIError("Task id and new status required !", 400)
+        }
+
+        const findTask = await task.findById(id);
+
+        if (!findTask) {
+            throw new APIError("Task not found", 404);
+        }
+
+        findTask.status = newStatus;
+
+        const updatedTask = await findTask.save();
+
+        return new Response(updatedTask, "Task status updated").success(res);
+    } catch (err) {
+        console.error(err);
+        next(err);
+    }
+
+}
+
+
+
+module.exports = { createTask, getAllTasks, deleteTask, getById, getByTodo, getByClosed, getByInprogress, updateStatus };
