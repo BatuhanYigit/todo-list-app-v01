@@ -91,7 +91,7 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
     const addItemToSection = async (id, newStatus) => {
         try {
             await updateTaskStatus(id, newStatus);
-            toast("Task Status Change");
+            toast.success(`Task status ${newStatus}`);
             const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all");
             if (!fetchTasksResponse.ok) {
                 throw new Error("Failed to fetch tasks");
@@ -151,7 +151,7 @@ const Task = ({ task, tasks, setTasks }) => {
             const updatedTasks = tasks.data.filter((t) => t._id !== id);
             setTasks({ ...tasks, data: updatedTasks });
 
-            toast("Removed", { icon: ":)" })
+            toast.success(`${task.name} Removed`)
 
         } catch (error) {
             console.error("Error removing task:", error.message);
