@@ -16,7 +16,7 @@ function App() {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/tasks");
+        const response = await fetch("http://localhost:5000/api/get-all");
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
         }
@@ -24,19 +24,15 @@ function App() {
         setTasks(data);
       } catch (error) {
         console.error("Error fetching tasks: ", error.message);
-        // Hata durumunda mevcut görevleri kullan
         const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
         setTasks(storedTasks);
-        toast.error("Failed to fetch tasks");
+
+
       }
     };
 
-    console.log("Tasks", tasks)
-    console.log("tEEEST", tasks)
-
     fetchTasks();
-    // const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-    // setTasks(storedTasks);
+
   }, [])
 
   return (

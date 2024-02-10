@@ -16,6 +16,6 @@ router.delete('/delete/:id', deleteTask);
 router.get('/get-todo', getByTodo);
 router.get('/get-closed', getByClosed);
 router.get('/get-inprogress', getByInprogress);
-router.put('/update-status', updateStatus);
+router.put('/update-status/:id', updateStatus);
 
 module.exports = router;

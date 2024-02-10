@@ -10,37 +10,21 @@ const ListTasks = ({ tasks, setTasks }) => {
 
     useEffect(() => {
 
-        async function fetchTodoList() {
-            try {
-                const response = await fetch("http://localhost:5000/api/get-all");
-                if (!response.ok) {
-                    throw new Error("Failed to todo list get!")
-                }
-                const data = await response.json();
-                setTodos(data.data);
+        if (Array.isArray(tasks.data)) {
+            const fTodos = tasks.data.filter((task) => task.status === "todo");
+            const fInProgress = tasks.data.filter((task) => task.status === "inprogress");
+            const fClosed = tasks.data.filter((task) => task.status === "closed");
 
-            } catch (error) {
-                console.error("Error fetching todo list: ", error.message);
-                toast.error("Failed todo list ", error.message)
-            }
-        }
+            setTodos(fTodos);
+            setInProgress(fInProgress);
+            setClosed(fClosed);
+        } else {
 
-        fetchTodoList();
-
-        if (tasks) {
-
-            const fTodos = tasks.filter((task) => task.status === "todo");
-            const fInProgress = tasks.filter((task) => task.status === "inprogress");
-            const fClosed = tasks.filter((task) => task.status === "closed");
-
-            setInProgress(fTodos)
-            setInProgress(fInProgress)
-            setClosed(fClosed)
-
+            console.log("Hello")
         }
 
 
-    }, [tasks]);
+    }, [tasks.data]);
 
     const statuses = ["todo", "inprogress", "closed"]
     return (<div className="flex gap-16">
@@ -60,8 +44,9 @@ export default ListTasks;
 const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
 
     const [{ isOver }, drop] = useDrop(() => ({
+
         accept: "task",
-        drop: (item) => addItemToSection(item.id),
+        drop: (item) => addItemToSection(item.id, status),
         collect: (monitor) => ({
             isOver: !!monitor.isOver()
         })
@@ -82,25 +67,45 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
         bg = "bg-green-500"
         tasksToMap = closed
     }
-    const addItemToSection = (id) => {
-        setTasks((prev) => {
-            const mTasks = prev.map(t => {
-                if (t.id === id) {
-                    return { ...t, status: status }
-                }
+    const updateTaskStatus = async (taskId, newStatus) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/update-status/${taskId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ id: taskId, newStatus: newStatus })
+            });
+            if (!response.ok) {
+                throw new Error("Failed to update task status");
+            }
+            const updatedTask = await response.json();
+            return updatedTask;
+        } catch (error) {
+            console.error("Error updating task status:", error.message);
+            toast.error("Failed to update task status");
+            throw error;
+        }
+    };
 
-                return t
-            })
+    const addItemToSection = async (id, newStatus) => {
+        try {
+            await updateTaskStatus(id, newStatus);
+            toast("Task Status Change");
+            const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all");
+            if (!fetchTasksResponse.ok) {
+                throw new Error("Failed to fetch tasks");
+            }
+            const updatedTasks = await fetchTasksResponse.json();
 
-            localStorage.setItem("tasks", JSON.stringify(mTasks))
-            console.log("Taskss ", JSON.stringify(mTasks))
-            console.log("Prev ", prev)
 
-            toast("Task Status Change")
-            return mTasks;
-        })
-        console.log("dropped", id, status);
-    }
+            setTasks(updatedTasks);
+        } catch (error) {
+            console.error("Error updating task status:", error.message);
+            toast.error("Failed to update task status");
+        }
+    };
+
 
     return (<div ref={drop} className={`w-64 rounded-md p-2 ${isOver ? "bg-slate-200" : ""}`}>
         <Header text={text} bg={bg} count={tasksToMap.length} />
@@ -121,7 +126,8 @@ const Task = ({ task, tasks, setTasks }) => {
 
     const [{ isDragging }, drag] = useDrag(() => ({
         type: "task",
-        item: { id: task.id },
+        item: { id: task._id },
+
         collect: (monitor) => ({
             isDragging: !!monitor.isDragging()
         })
@@ -131,7 +137,7 @@ const Task = ({ task, tasks, setTasks }) => {
 
 
     const handleRemove = async (id) => {
-        console.log(id);
+
 
         try {
             const response = await fetch(`http://localhost:5000/api/delete/${id}`, {
@@ -141,10 +147,9 @@ const Task = ({ task, tasks, setTasks }) => {
             if (!response.ok) {
                 throw new Error("Failed to delete task");
             }
-            if (tasks) {
-                const fTasks = tasks.filter((t) => t.id !== id);
-                setTasks(fTasks);
-            }
+            console.log("tasks delete", tasks)
+            const updatedTasks = tasks.data.filter((t) => t._id !== id);
+            setTasks({ ...tasks, data: updatedTasks });
 
             toast("Removed", { icon: ":)" })
 
@@ -170,6 +175,3 @@ const Task = ({ task, tasks, setTasks }) => {
         </div>
     );
 }
-
-
-//hello

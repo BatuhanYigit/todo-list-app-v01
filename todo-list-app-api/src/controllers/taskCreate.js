@@ -107,13 +107,16 @@ const createTask = async (req, res, next) => {
 
 
 const updateStatus = async (req, res, next) => {
+    const id = req.params.id;
 
-    const { id, newStatus } = req.body;
+    const { newStatus } = req.body;
 
     try {
-        if (!id || !newStatus) {
+        if (!newStatus) {
             throw new APIError("Task id and new status required !", 400)
         }
+
+        console.log("IDDDDDD", id)
 
         const findTask = await task.findById(id);
 
