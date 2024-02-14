@@ -8,6 +8,9 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import '@mantine/notifications/styles.css';
+import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 
 function App() {
   const [tasks, setTasks] = useState([])
