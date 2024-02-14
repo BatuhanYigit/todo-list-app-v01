@@ -8,12 +8,14 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import '@mantine/notifications/styles.css';
-import { MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
+
 
 function App() {
   const [tasks, setTasks] = useState([])
+
+  const login = async () => {
+
+  }
 
 
 
@@ -46,7 +48,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/' element={<LoginSignup />} />
-        <Route path='/dashboard' element={
+        <Route path='/dashboard' element={login ?
           <DndProvider backend={HTML5Backend}>
             <Toaster />
             <div className="bg-slate-100 w-screen h-screen flex flex-col items-center pt-3 gap-16 pt-32">
@@ -55,6 +57,7 @@ function App() {
               <ListTasks tasks={tasks} setTasks={setTasks} />
             </div>
           </DndProvider>
+          : <LoginSignup />
 
         } />
       </Routes>
