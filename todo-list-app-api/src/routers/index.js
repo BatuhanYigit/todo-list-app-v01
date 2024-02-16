@@ -1,5 +1,5 @@
 var express = require('express');
-const { createTask, getAllTasks, deleteTask, getByTodo, getByClosed, getByInprogress, updateStatus } = require("../controllers/taskCreate")
+const { createTask, getAllTasks, deleteTask, getByTodo, getByClosed, getByInprogress, updateStatus, getTokenTest } = require("../controllers/taskCreate")
 const { login, register, userAuth } = require("../controllers/auth.controller")
 const authValidation = require("../middlewares/validations/auth.validation")
 const { tokenCheck } = require("../middlewares/auth")
@@ -17,13 +17,15 @@ router.get('/', (req, res) => {
     res.send('Hello Express!');
 });
 
-router.post('/create', createTask);
-router.get('/get-all', getAllTasks);
+router.post('/create', tokenCheck, createTask);
+router.get('/get-all', tokenCheck, getAllTasks);
 router.delete('/delete/:id', deleteTask);
 router.get('/get-todo', getByTodo);
 router.get('/get-closed', getByClosed);
 router.get('/get-inprogress', getByInprogress);
 router.put('/update-status/:id', updateStatus);
+
+
 
 router.post("/login", authValidation.login, login)
 

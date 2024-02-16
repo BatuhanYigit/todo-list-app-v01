@@ -21,7 +21,8 @@ const getById = async (req, res, next) => {
 
 const getAllTasks = async (req, res, next) => {
     try {
-        const tasks = await task.find();
+        const userId = req.user._id
+        const tasks = await task.find({ userId });
         return new Response(tasks, "All tasks").success(res);
     } catch (err) {
         console.error(err);
@@ -31,7 +32,8 @@ const getAllTasks = async (req, res, next) => {
 
 const getByTodo = async (req, res, next) => {
     try {
-        const tasks = await task.find({ status: "todo" });
+        const userId = req.user._id
+        const tasks = await task.find({ userId, status: "todo" });
         return new Response(tasks, "Todo all").success(res);
 
     } catch (err) {
@@ -42,7 +44,8 @@ const getByTodo = async (req, res, next) => {
 
 const getByInprogress = async (req, res, next) => {
     try {
-        const tasks = await task.find({ status: "inprogress" });
+        const userId = req.user._id
+        const tasks = await task.find({ userId, status: "inprogress" });
         return new Response(tasks, "inprogress all").success(res);
 
     } catch (err) {
@@ -53,7 +56,8 @@ const getByInprogress = async (req, res, next) => {
 
 const getByClosed = async (req, res, next) => {
     try {
-        const tasks = await task.find({ status: "closed" });
+        const userId = req.user._id
+        const tasks = await task.find({ userId, status: "closed" });
         return new Response(tasks, "closed all").success(res);
 
     } catch (err) {
@@ -89,6 +93,9 @@ const createTask = async (req, res, next) => {
     const { name } = req.body
 
     try {
+
+        const userId = req.user._id;
+
         const taskCheck = await task.findOne({ name });
 
         if (taskCheck) {
@@ -96,7 +103,7 @@ const createTask = async (req, res, next) => {
             return next(error);
         }
 
-        const taskSave = new task(req.body);
+        const taskSave = new task({ name, userId, status: 'todo' });
         const savedTask = await taskSave.save();
         return new Response(savedTask, "Task Created").created(res);
     } catch (err) {
@@ -138,4 +145,6 @@ const updateStatus = async (req, res, next) => {
 
 
 
-module.exports = { createTask, getAllTasks, deleteTask, getById, getByTodo, getByClosed, getByInprogress, updateStatus };
+
+
+module.exports = { createTask, getAllTasks, deleteTask, getById, getByTodo, getByClosed, getByInprogress, updateStatus, };

@@ -28,19 +28,32 @@ const tokenCheck = async (req, res, next) => {
     const headerToken = req.headers.authorization && req.headers.authorization.startsWith("Bearer ")
 
     if (!headerToken)
-        throw new APIError("Invalid Token", 401)
+        return res.status(401).json({
+            success: false,
+            message: "Unauthorized: Invalid Token"
+        });
 
     const token = req.headers.authorization.split(" ")[1]
 
     await jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-        if (err) throw new APIError("Invalid Token", 401)
+        if (err) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid Token"
+            });
+        }
 
         const userInfo = await user.findById(decoded.sub).select("_id name lastname email")
 
         console.log(userInfo)
 
-        if (!userInfo)
-            throw new APIError("Invalid token! ", 401)
+        if (!userInfo) {
+            return res.status(401).json({
+                success: false,
+                message: "Unauthorized: Invalid Token"
+            });
+        }
+
 
         req.user = userInfo
         next();
