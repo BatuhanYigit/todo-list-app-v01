@@ -5,9 +5,14 @@ const user = require("../models/user.model")
 
 
 const createToken = async (userInfo, res) => {
+
+    console.log("User infooo ", userInfo)
     const payload = {
         sub: userInfo._id,
-        name: userInfo.name
+        name: userInfo.name,
+        lastname: userInfo.lastname,
+        email: userInfo.email
+
     }
 
     const token = await jwt.sign(payload, process.env.JWT_SECRET_KEY, {

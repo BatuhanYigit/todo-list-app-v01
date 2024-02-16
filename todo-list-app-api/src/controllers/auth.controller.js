@@ -13,7 +13,7 @@ const login = async (req, res) => {
 
     const userInfo = await user.findOne({ email: email }) //db email: req.body.email
 
-    console.log(userInfo);
+    console.log("User Info", userInfo);
 
     if (!userInfo)
         throw new APIError("Email or password Invalid ! ", 401)

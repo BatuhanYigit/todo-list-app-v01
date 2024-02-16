@@ -114,7 +114,9 @@ export const LoginSignup = () => {
 
 
 
-                        console.log('Token = ', data.token);
+                        localStorage.setItem("token", data.token)
+
+                        console.log("test", data.name)
 
 
 

@@ -2,6 +2,8 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from 'uuid';
 
+const localToken = localStorage.getItem('token')
+
 const CreateTask = ({ tasks, setTasks }) => {
     const [task, setTask] = useState({
         id: "",
@@ -27,6 +29,7 @@ const CreateTask = ({ tasks, setTasks }) => {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
+                    "Authorization": `Bearer ${localToken}`
                 },
                 body: JSON.stringify({
                     name: task.name,
@@ -40,7 +43,12 @@ const CreateTask = ({ tasks, setTasks }) => {
             }
 
 
-            const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all");
+            const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all", {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${localToken}`
+                }
+            });
             if (!fetchTasksResponse.ok) {
                 throw new Error("Failed to fetch tasks");
             }

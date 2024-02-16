@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import toast from "react-hot-toast";
 
+const localToken = localStorage.getItem('token')
+
 const ListTasks = ({ tasks, setTasks }) => {
 
     const [todos, setTodos] = useState([]);
@@ -72,7 +74,8 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
             const response = await fetch(`http://localhost:5000/api/update-status/${taskId}`, {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${localToken}`
                 },
                 body: JSON.stringify({ id: taskId, newStatus: newStatus })
             });
@@ -92,7 +95,12 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
         try {
             await updateTaskStatus(id, newStatus);
             toast.success(`Task status ${newStatus}`);
-            const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all");
+            const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all", {
+                method: 'GET',
+                headers: {
+                    "Authorization": `Bearer ${localToken}`
+                }
+            });
             if (!fetchTasksResponse.ok) {
                 throw new Error("Failed to fetch tasks");
             }
@@ -141,7 +149,10 @@ const Task = ({ task, tasks, setTasks }) => {
 
         try {
             const response = await fetch(`http://localhost:5000/api/delete/${id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    "Authorization": `Bearer ${localToken}`
+                }
             });
             console.log("RESPONSE BOOL", response.ok)
             if (!response.ok) {
