@@ -12,6 +12,19 @@ import {
     IconChevronRight,
     IconDots,
 } from '@tabler/icons-react';
+import { jwtDecode } from "jwt-decode";
+
+
+
+// Token'i al ve çöz
+const token = localStorage.getItem('token');
+const decodedToken = token ? jwtDecode(token) : null;
+const decodedTokenObject = decodedToken as { [key: string]: any };
+
+
+console.log("token decode", decodedTokenObject.name);
+
+
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {
     image: string;
@@ -56,9 +69,9 @@ function UserMenu() {
         <Menu withArrow>
             <Menu.Target>
                 <UserButton
-                    image="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
-                    name="Batuhan Yiğit"
-                    email="batuhan-test@outlook.com"
+                    image="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
+                    name={decodedTokenObject.name}
+                    email={decodedTokenObject.email}
                 />
             </Menu.Target>
             <Menu.Dropdown>
@@ -70,13 +83,13 @@ function UserMenu() {
                     <Group>
                         <Avatar
                             radius="xl"
-                            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-8.png"
+                            src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
                         />
 
                         <div>
-                            <Text fw={500}>Batuhan Yiğit</Text>
+                            <Text fw={500}>{decodedTokenObject?.name}</Text>
                             <Text size="xs" c="dimmed">
-                                batuhan-test@outlook.com
+                                {decodedTokenObject?.email}
                             </Text>
                         </div>
                     </Group>

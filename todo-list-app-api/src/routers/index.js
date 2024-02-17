@@ -17,11 +17,11 @@ router.get('/', (req, res) => {
     res.send('Hello Express!');
 });
 
-router.post('/create', createTask);
-router.get('/get-all', getAllTasks);
+router.post('/create', tokenCheck, createTask);
+router.get('/get-all', tokenCheck, getAllTasks);
 router.delete('/delete/:id', deleteTask);
-router.get('/get-todo', getByTodo);
-router.get('/get-closed', getByClosed);
+router.get('/get-todo', tokenCheck, getByTodo);
+router.get('/get-closed', tokenCheck, getByClosed);
 router.get('/get-inprogress', getByInprogress);
 router.put('/update-status/:id', updateStatus);
 
