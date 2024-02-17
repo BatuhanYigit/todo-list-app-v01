@@ -23,14 +23,18 @@ function App() {
 
   useEffect(() => {
 
+    const localToken = localStorage.getItem('token')
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/get-all");
+        const response = await fetch("http://localhost:5000/api/get-all", {
+          method: 'GET',
+          headers: {
+            "Authorization": `Bearer ${localToken}`
+          }
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
         }
-        const data = await response.json();
-        setTasks(data);
       } catch (error) {
         console.error("Error fetching tasks: ", error.message);
         const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];

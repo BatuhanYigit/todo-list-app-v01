@@ -33,27 +33,29 @@ const tokenCheck = async (req, res, next) => {
     const headerToken = req.headers.authorization && req.headers.authorization.startsWith("Bearer ")
 
     if (!headerToken)
-        throw new APIError("Invalid Token", 401)
+        return res.status(401).json({ message: "Invalid Token" });
 
     const token = req.headers.authorization.split(" ")[1]
 
-    await jwt.verify(token, process.env.JWT_SECRET_KEY, async (err, decoded) => {
-        if (err) throw new APIError("Invalid Token", 401)
-
-        const userInfo = await user.findById(decoded.sub).select("_id name lastname email")
+    try {
+        const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const userInfo = await user.findById(decoded.sub).select("_id name lastname email");
 
         console.log(userInfo)
 
         if (!userInfo)
-            throw new APIError("Invalid token! ", 401)
+
+            return res.status(401).json({ message: "Invalid token!" });
 
         req.user = userInfo
+        req.user = userInfo;
         next();
-
-    })
-
-
+    } catch (err) {
+        return res.status(401).json({ message: "Invalid Token" });
+    }
 }
+
+
 
 module.exports = {
     createToken,

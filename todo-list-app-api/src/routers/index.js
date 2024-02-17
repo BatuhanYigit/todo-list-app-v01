@@ -29,6 +29,6 @@ router.post("/login", authValidation.login, login)
 
 router.post("/register", authValidation.register, register)
 
-router.get("/auth", tokenCheck, userAuth)
+// router.get("/auth", tokenCheck, userAuth)
 
 module.exports = router;

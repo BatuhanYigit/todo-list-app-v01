@@ -13,16 +13,16 @@ import {
     IconDots,
 } from '@tabler/icons-react';
 import { jwtDecode } from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
 
 
 
-// Token'i al ve çöz
 const token = localStorage.getItem('token');
 const decodedToken = token ? jwtDecode(token) : null;
 const decodedTokenObject = decodedToken as { [key: string]: any };
 
 
-console.log("token decode", decodedTokenObject.name);
+
 
 
 
@@ -64,14 +64,22 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
 );
 
 function UserMenu() {
+    const navigate = useNavigate()
     const theme = useMantineTheme();
+    const handleLogout = () => {
+
+        localStorage.removeItem('token');
+
+
+        navigate('/');
+    };
     return (
         <Menu withArrow>
             <Menu.Target>
                 <UserButton
                     image="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-                    name={decodedTokenObject.name}
-                    email={decodedTokenObject.email}
+                    name={decodedTokenObject?.name || ""}
+                    email={decodedTokenObject?.email || ""}
                 />
             </Menu.Target>
             <Menu.Dropdown>
@@ -87,9 +95,9 @@ function UserMenu() {
                         />
 
                         <div>
-                            <Text fw={500}>{decodedTokenObject?.name}</Text>
+                            <Text fw={500}>{decodedTokenObject?.name || "Unknown"}</Text>
                             <Text size="xs" c="dimmed">
-                                {decodedTokenObject?.email}
+                                {decodedTokenObject?.email || "Unknown"}
                             </Text>
                         </div>
                     </Group>
@@ -146,6 +154,7 @@ function UserMenu() {
                 </Menu.Item>
                 <Menu.Item
                     leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
+                    onClick={handleLogout}
                 >
                     Logout
                 </Menu.Item>
