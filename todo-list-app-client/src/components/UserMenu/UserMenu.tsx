@@ -113,7 +113,7 @@ function UserMenu() {
                         />
                     }
                 >
-                    Liked posts
+                    Liked Tasks
                 </Menu.Item>
                 <Menu.Item
                     leftSection={
@@ -124,7 +124,7 @@ function UserMenu() {
                         />
                     }
                 >
-                    Saved posts
+                    Saved Tasks
                 </Menu.Item>
                 <Menu.Item
                     leftSection={
@@ -135,7 +135,7 @@ function UserMenu() {
                         />
                     }
                 >
-                    Your comments
+                    Your Tasks
                 </Menu.Item>
 
                 <Menu.Label>Settings</Menu.Label>
@@ -152,28 +152,16 @@ function UserMenu() {
                     Change account
                 </Menu.Item>
                 <Menu.Item
+                    color="red"
                     leftSection={<IconLogout style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
                     onClick={handleLogout}
                 >
                     Logout
                 </Menu.Item>
 
-                <Menu.Divider />
 
-                <Menu.Label>Danger zone</Menu.Label>
-                <Menu.Item
-                    leftSection={
-                        <IconPlayerPause style={{ width: rem(16), height: rem(16) }} stroke={1.5} />
-                    }
-                >
-                    Pause subscription
-                </Menu.Item>
-                <Menu.Item
-                    color="red"
-                    leftSection={<IconTrash style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
-                >
-                    Delete account
-                </Menu.Item>
+
+
             </Menu.Dropdown>
         </Menu>
     );
