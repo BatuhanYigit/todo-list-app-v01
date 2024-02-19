@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import toast from "react-hot-toast";
+import CardTest from "../components/CardTest/CardTest"
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -213,6 +214,21 @@ const Task = ({ task, tasks, setTasks }) => {
     }
     return (
         <div ref={drag} className={`relative p-4 mt-8 shadow-md rounded-md ${isDragging ? "opacity-25" : "opacity-100"} cursor-grab`}>
+
+            {/* <CardTest
+                data={{
+                    title: task.name,
+                    description: "Tasks Detail",
+                    completedTasks: 23,
+                    totalTasks: 36,
+                    avatars: [
+                        'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-2.png',
+                        'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-4.png',
+                        'https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-7.png',
+                    ]
+                }}
+            /> */}
+
             <p>{task.name}</p>
             <button className="absolute bottom-1 right-1 text-slate-400" onClick={() => handleRemove(task._id)}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
