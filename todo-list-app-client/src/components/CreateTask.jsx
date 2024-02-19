@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const CreateTask = ({ tasks, setTasks }) => {
-    const localToken = localStorage.getItem('token')
+
     const [task, setTask] = useState({
         id: "",
         name: "",
@@ -15,6 +15,7 @@ const CreateTask = ({ tasks, setTasks }) => {
 
 
     const handleSubmit = async (e) => {
+        const localToken = localStorage.getItem('token')
         e.preventDefault();
 
         if (task.name.length < 3) {

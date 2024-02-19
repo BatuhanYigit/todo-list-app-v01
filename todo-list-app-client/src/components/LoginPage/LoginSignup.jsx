@@ -11,7 +11,7 @@ import '@mantine/notifications/styles.css';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const LoginSignup = () => {
-    console.log("Env", apiUrl)
+
     const navigate = useNavigate();
 
     const [action, setAction] = useState("Login");

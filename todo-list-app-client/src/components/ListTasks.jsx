@@ -52,7 +52,7 @@ const ListTasks = ({ tasks, setTasks }) => {
             setClosed(fClosed);
         } else {
 
-            console.log("Tasks Empty")
+            console.log()
 
         }
 
@@ -153,7 +153,7 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
 
     return (<div ref={drop} className={`w-64 rounded-md p-2 ${isOver ? "bg-slate-200" : ""}`}>
         <Header text={text} bg={bg} count={tasksToMap.length} />
-        {tasksToMap.length > 0 && tasksToMap.map((task) => <Task key={task.id} task={task} tasks={tasks} setTasks={setTasks} />)}
+        {tasksToMap.length > 0 && tasksToMap.map((task) => <Task key={task._id} task={task} tasks={tasks} setTasks={setTasks} />)}
     </div>);
 }
 

@@ -22,33 +22,33 @@ function App() {
 
 
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const localToken = localStorage.getItem('token')
-    const fetchTasks = async () => {
-      try {
-        const response = await fetch(`${apiUrl}/get-all`, {
-          method: 'GET',
-          headers: {
-            "Authorization": `Bearer ${localToken}`
-          }
-        });
-        if (!response.ok) {
-          throw new Error("Failed to fetch tasks");
+  //   const localToken = localStorage.getItem('token')
+  //   const fetchTasks = async () => {
+  //     try {
+  //       const response = await fetch(`${apiUrl}/get-all`, {
+  //         method: 'GET',
+  //         headers: {
+  //           "Authorization": `Bearer ${localToken}`
+  //         }
+  //       });
+  //       if (!response.ok) {
+  //         throw new Error("Failed to fetch tasks");
 
-        }
-      } catch (error) {
-        console.error("Error fetching tasks: ", error.message);
-        const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        setTasks(storedTasks);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching tasks: ", error.message);
+  //       const storedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+  //       setTasks(storedTasks);
 
 
-      }
-    };
+  //     }
+  //   };
 
-    fetchTasks();
+  //   fetchTasks();
 
-  }, [])
+  // }, [])
 
   return (
 
