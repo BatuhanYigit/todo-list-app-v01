@@ -11,7 +11,7 @@ const CreateTask = ({ tasks, setTasks }) => {
         status: "todo",
     });
 
-    console.log(task)
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();

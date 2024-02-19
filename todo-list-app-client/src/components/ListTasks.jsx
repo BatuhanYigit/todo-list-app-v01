@@ -34,10 +34,10 @@ const ListTasks = ({ tasks, setTasks }) => {
         fetchData();
     }, [localToken]);
 
-    console.log("Tokeeeeeeen", localToken)
+
 
     useEffect(() => {
-        console.log("Arrrrrrraaaaayy", tasks.data)
+
 
         if (Array.isArray(tasks.data)) {
             const fTodos = tasks.data.filter((task) => task.status === "todo");
@@ -49,8 +49,8 @@ const ListTasks = ({ tasks, setTasks }) => {
             setClosed(fClosed);
         } else {
 
-            console.log("Hello")
-            console.log(tasks.data)
+            console.log("Tasks Empty")
+
         }
 
 
@@ -171,7 +171,7 @@ const Task = ({ task, tasks, setTasks }) => {
         })
     }))
 
-    console.log(isDragging)
+
 
 
     const handleRemove = async (id) => {
@@ -185,11 +185,11 @@ const Task = ({ task, tasks, setTasks }) => {
                     "Authorization": `Bearer ${localToken}`
                 }
             });
-            console.log("RESPONSE BOOL", response.ok)
+
             if (!response.ok) {
                 throw new Error("Failed to delete task");
             }
-            console.log("tasks delete", tasks)
+
             const updatedTasks = tasks.data.filter((t) => t._id !== id);
             setTasks({ ...tasks, data: updatedTasks });
 

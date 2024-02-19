@@ -20,7 +20,7 @@ const login = async (req, res) => {
 
     const comparePassword = await bcrypt.compare(password, userInfo.password)//Password, Hashed db password
 
-    console.log(comparePassword)
+
 
 
     if (!comparePassword)

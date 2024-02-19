@@ -49,7 +49,7 @@ export const LoginSignup = () => {
 
                         })
 
-                        console.log('Register successfull');
+
 
 
                         setAction('Login');
@@ -116,9 +116,7 @@ export const LoginSignup = () => {
 
                         localStorage.setItem("token", data.token)
 
-                        console.log("login token", data.token)
 
-                        console.log("test", data.name)
 
 
 

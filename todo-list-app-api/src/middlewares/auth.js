@@ -6,7 +6,7 @@ const user = require("../models/user.model")
 
 const createToken = async (userInfo, res) => {
 
-    console.log("User infooo ", userInfo)
+
     const payload = {
         sub: userInfo._id,
         name: userInfo.name,
@@ -41,7 +41,7 @@ const tokenCheck = async (req, res, next) => {
         const decoded = await jwt.verify(token, process.env.JWT_SECRET_KEY);
         const userInfo = await user.findById(decoded.sub).select("_id name lastname email");
 
-        console.log(userInfo)
+
 
         if (!userInfo)
 
