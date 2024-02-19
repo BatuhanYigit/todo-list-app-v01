@@ -17,10 +17,6 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const token = localStorage.getItem('token');
-const decodedToken = token ? jwtDecode(token) : null;
-const decodedTokenObject = decodedToken as { [key: string]: any };
-
 
 
 
@@ -64,6 +60,9 @@ const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
 );
 
 function UserMenu() {
+    const token = localStorage.getItem('token');
+    const decodedToken = token ? jwtDecode(token) : null;
+    const decodedTokenObject = decodedToken as { [key: string]: any };
     const navigate = useNavigate()
     const theme = useMantineTheme();
     const handleLogout = () => {

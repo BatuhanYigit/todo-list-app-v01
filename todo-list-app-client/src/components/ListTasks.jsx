@@ -2,15 +2,42 @@ import { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import toast from "react-hot-toast";
 
-const localToken = localStorage.getItem('token')
+
 
 const ListTasks = ({ tasks, setTasks }) => {
+    const localToken = localStorage.getItem('token')
 
     const [todos, setTodos] = useState([]);
     const [inProgress, setInProgress] = useState([]);
     const [closed, setClosed] = useState([]);
 
     useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/get-all', {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${localToken}`
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to fetch data');
+                }
+                const data = await response.json();
+                setTasks(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // Hata durumunda isteğin nasıl işleneceğine karar verin
+            }
+        };
+
+        fetchData();
+    }, [localToken]);
+
+    console.log("Tokeeeeeeen", localToken)
+
+    useEffect(() => {
+        console.log("Arrrrrrraaaaayy", tasks.data)
 
         if (Array.isArray(tasks.data)) {
             const fTodos = tasks.data.filter((task) => task.status === "todo");
@@ -23,6 +50,7 @@ const ListTasks = ({ tasks, setTasks }) => {
         } else {
 
             console.log("Hello")
+            console.log(tasks.data)
         }
 
 
@@ -70,6 +98,7 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
         tasksToMap = closed
     }
     const updateTaskStatus = async (taskId, newStatus) => {
+        const localToken = localStorage.getItem('token')
         try {
             const response = await fetch(`http://localhost:5000/api/update-status/${taskId}`, {
                 method: 'PUT',
@@ -92,6 +121,7 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
     };
 
     const addItemToSection = async (id, newStatus) => {
+        const localToken = localStorage.getItem('token')
         try {
             await updateTaskStatus(id, newStatus);
             toast.success(`Task status ${newStatus}`);
@@ -145,6 +175,7 @@ const Task = ({ task, tasks, setTasks }) => {
 
 
     const handleRemove = async (id) => {
+        const localToken = localStorage.getItem('token')
 
 
         try {
