@@ -1,5 +1,5 @@
 const user = require("../models/user.model");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const APIError = require("../utils/errors");
 const Response = require("../utils/response");
 const { createToken } = require("../middlewares/auth");
@@ -23,6 +23,7 @@ const login = async (req, res) => {
 
 
 
+
     if (!comparePassword)
         return res.status(401).json({ message: "Email or password Invalid !" });
 
@@ -42,6 +43,7 @@ const register = async (req, res) => {
     }
 
     req.body.password = await bcrypt.hash(req.body.password, 10)
+
 
     const userSave = new user(req.body)
 
