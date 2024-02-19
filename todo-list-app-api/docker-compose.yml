@@ -5,9 +5,9 @@ services:
     build: .
     container_name: todolistapi
     ports:
-      - "5000:5000"
+      - "5010:5010"
     environment:
-      PORT: 5000
+      PORT: 5010
       DB_URL: "mongodb://root:example@mongodb:27017/"
     depends_on:
       - mongodb

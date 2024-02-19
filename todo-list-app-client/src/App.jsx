@@ -10,6 +10,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function App() {
   const [tasks, setTasks] = useState([])
@@ -26,7 +27,7 @@ function App() {
     const localToken = localStorage.getItem('token')
     const fetchTasks = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/get-all", {
+        const response = await fetch(`${apiUrl}/get-all`, {
           method: 'GET',
           headers: {
             "Authorization": `Bearer ${localToken}`

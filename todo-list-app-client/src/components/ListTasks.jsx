@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import toast from "react-hot-toast";
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 
 const ListTasks = ({ tasks, setTasks }) => {
@@ -14,7 +16,7 @@ const ListTasks = ({ tasks, setTasks }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/get-all', {
+                const response = await fetch(`${apiUrl}/get-all`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${localToken}`
@@ -26,8 +28,9 @@ const ListTasks = ({ tasks, setTasks }) => {
                 const data = await response.json();
                 setTasks(data);
             } catch (error) {
-                console.error('Error fetching data:', error);
-                // Hata durumunda isteğin nasıl işleneceğine karar verin
+                throw new Error('Failed to fetch data');
+
+
             }
         };
 
@@ -71,7 +74,10 @@ const ListTasks = ({ tasks, setTasks }) => {
 
 export default ListTasks;
 
+
+
 const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
+
 
     const [{ isOver }, drop] = useDrop(() => ({
 
@@ -100,7 +106,7 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
     const updateTaskStatus = async (taskId, newStatus) => {
         const localToken = localStorage.getItem('token')
         try {
-            const response = await fetch(`http://localhost:5000/api/update-status/${taskId}`, {
+            const response = await fetch(`${apiUrl}/update-status/${taskId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -125,7 +131,7 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, closed, }) => {
         try {
             await updateTaskStatus(id, newStatus);
             toast.success(`Task status ${newStatus}`);
-            const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all", {
+            const fetchTasksResponse = await fetch(`${apiUrl}/get-all`, {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${localToken}`
@@ -179,7 +185,7 @@ const Task = ({ task, tasks, setTasks }) => {
 
 
         try {
-            const response = await fetch(`http://localhost:5000/api/delete/${id}`, {
+            const response = await fetch(`${apiUrl}/delete/${id}`, {
                 method: 'DELETE',
                 headers: {
                     "Authorization": `Bearer ${localToken}`

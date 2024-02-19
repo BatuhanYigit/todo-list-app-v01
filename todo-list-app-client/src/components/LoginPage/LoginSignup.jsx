@@ -8,9 +8,10 @@ import { notifications } from '@mantine/notifications';
 
 import '@mantine/notifications/styles.css';
 
-
+const apiUrl = import.meta.env.VITE_API_URL;
 
 export const LoginSignup = () => {
+    console.log("Env", apiUrl)
     const navigate = useNavigate();
 
     const [action, setAction] = useState("Login");
@@ -31,7 +32,7 @@ export const LoginSignup = () => {
 
             }
 
-            fetch("http://localhost:5000/api/register", {
+            fetch(`${apiUrl}/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ export const LoginSignup = () => {
 
 
 
-            fetch("http://localhost:5000/api/login", {
+            fetch(`${apiUrl}/login`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

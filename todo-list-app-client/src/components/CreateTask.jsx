@@ -2,9 +2,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { v4 as uuidv4 } from 'uuid';
 
-const localToken = localStorage.getItem('token')
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const CreateTask = ({ tasks, setTasks }) => {
+    const localToken = localStorage.getItem('token')
     const [task, setTask] = useState({
         id: "",
         name: "",
@@ -25,7 +26,7 @@ const CreateTask = ({ tasks, setTasks }) => {
         }
 
         try {
-            const response = await fetch("http://localhost:5000/api/create", {
+            const response = await fetch(`${apiUrl}/create`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",
@@ -43,7 +44,7 @@ const CreateTask = ({ tasks, setTasks }) => {
             }
 
 
-            const fetchTasksResponse = await fetch("http://localhost:5000/api/get-all", {
+            const fetchTasksResponse = await fetch(`${apiUrl}/get-all`, {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${localToken}`
