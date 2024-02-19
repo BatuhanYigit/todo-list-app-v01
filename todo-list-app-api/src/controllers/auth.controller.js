@@ -8,15 +8,15 @@ const { response } = require("express");
 
 const login = async (req, res) => {
 
-    console.log("Login geldi")
+
     const { email, password } = req.body
 
     const userInfo = await user.findOne({ email: email }) //db email: req.body.email
 
-    console.log("User Info", userInfo);
+
 
     if (!userInfo)
-        throw new APIError("Email or password Invalid ! ", 401)
+        return res.status(401).json({ message: "Email or password Invalid !" });
 
     const comparePassword = await bcrypt.compare(password, userInfo.password)//Password, Hashed db password
 
@@ -24,7 +24,7 @@ const login = async (req, res) => {
 
 
     if (!comparePassword)
-        throw new APIError("Email or password Invalid !", 401)
+        return res.status(401).json({ message: "Email or password Invalid !" });
 
     createToken(userInfo, res)
 
@@ -37,13 +37,11 @@ const register = async (req, res) => {
     const userCheck = await user.findOne({ email })
 
     if (userCheck) {
-        throw new APIError("Email already use! ", 401)
+        return res.status(401).json({ message: "Email already use!" });
 
     }
 
     req.body.password = await bcrypt.hash(req.body.password, 10)
-
-    console.log("hashed password : ", req.body.password);
 
     const userSave = new user(req.body)
 
@@ -53,7 +51,8 @@ const register = async (req, res) => {
             return new Response(data, "Account Created").created(res)
         })
         .catch((err) => {
-            throw new APIError("Account not created!", 400)
+            return res.status(400).json({ message: "Account not created!" });
+
         })
 
 }

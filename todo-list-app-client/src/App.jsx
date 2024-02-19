@@ -34,6 +34,7 @@ function App() {
         });
         if (!response.ok) {
           throw new Error("Failed to fetch tasks");
+
         }
       } catch (error) {
         console.error("Error fetching tasks: ", error.message);

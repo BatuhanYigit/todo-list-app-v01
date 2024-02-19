@@ -44,8 +44,11 @@ class authValidation {
 
         } catch (error) {
             if (error.details && error?.details[0].message)
-                throw new APIError(error.details[0].message, 400)
-            else throw new APIError("Validation error ! ", 400)
+                return res.status(400).json({ message: error.details[0].message });
+
+
+
+            else return res.status(400).json({ message: "Validation error!" });
         }
         next()
     }
@@ -76,8 +79,8 @@ class authValidation {
 
         } catch (error) {
             if (error.details && error?.details[0].message)
-                throw new APIError(error.details[0].message, 400)
-            else throw new APIError("Validation error ! ", 400)
+                return res.status(400).json({ message: error.details[0].message });
+            else return res.status(400).json({ message: "Validation error!" });
         }
         next();
 

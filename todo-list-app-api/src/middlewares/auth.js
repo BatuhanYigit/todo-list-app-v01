@@ -29,7 +29,7 @@ const createToken = async (userInfo, res) => {
 }
 
 const tokenCheck = async (req, res, next) => {
-    console.log("Test")
+
     const headerToken = req.headers.authorization && req.headers.authorization.startsWith("Bearer ")
 
     if (!headerToken)

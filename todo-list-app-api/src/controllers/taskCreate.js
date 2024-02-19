@@ -10,7 +10,7 @@ const getById = async (req, res, next) => {
         const getByTask = await task.getById(taskID);
 
         if (!getByTask) {
-            throw new APIError("Task not found", 404);
+            return res.status(404).json({ message: "Task not found" });
         }
         return new Response(task, "Task deleted").success(res)
     } catch (err) {
@@ -70,12 +70,17 @@ const deleteTask = async (req, res, next) => {
     const taskId = req.params.id;
     try {
         if (!taskId) {
-            throw new APIError("Task id required")
+
+            return res.status(400).json({ message: "Task id required" });
+
         }
         const deleteTask = await task.findByIdAndDelete(taskId)
 
         if (!deleteTask) {
-            throw new APIError("Task not found", 404);
+
+
+            return res.status(400).json({ message: "Task not found" });
+
         }
 
         return new Response(task, "Task deleted").success(res)
@@ -97,8 +102,7 @@ const createTask = async (req, res, next) => {
         const taskCheck = await task.findOne({ name });
 
         if (taskCheck) {
-            const error = new APIError("Task already use!", 401);
-            return next(error);
+            return res.status(401).json({ message: "Task already use!" });
         }
 
         const taskSave = new task({ name, userId, status: 'todo' });
@@ -118,15 +122,17 @@ const updateStatus = async (req, res, next) => {
 
     try {
         if (!newStatus) {
-            throw new APIError("Task id and new status required !", 400)
+
+            return res.status(400).json({ message: "Task id and new status required !" });
+
         }
 
-        console.log("IDDDDDD", id)
+
 
         const findTask = await task.findById(id);
 
         if (!findTask) {
-            throw new APIError("Task not found", 404);
+            return res.status(404).json({ message: "Task not found" });
         }
 
         findTask.status = newStatus;

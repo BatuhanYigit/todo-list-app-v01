@@ -64,7 +64,7 @@ const CreateTask = ({ tasks, setTasks }) => {
                 status: "todo",
             });
         } catch (error) {
-            console.error("Error creating task:", error.message);
+
             toast.error("Failed to create task");
         }
     }
