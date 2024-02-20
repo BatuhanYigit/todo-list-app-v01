@@ -9,7 +9,6 @@ const apiUrl = import.meta.env.VITE_API_URL;
 
 const ListTasks = ({ tasks, setTasks }) => {
     const localToken = localStorage.getItem('token')
-
     const [todos, setTodos] = useState([]);
     const [inProgress, setInProgress] = useState([]);
     const [closed, setClosed] = useState([]);
